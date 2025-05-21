@@ -22,7 +22,7 @@ export class BancoController {
     return this.bancoService.getCuentaSaldoMinimo(saldo);
   }
   @Get('numero_cuenta/:cuenta')
-  getCuentaPorNumeroCuenta(@Param("cuenta") numeroCuenta:string, @Res() response:Response):Cuenta{
+  getCuentaPorNumeroCuenta(@Param("cuenta") numeroCuenta:string, @Res() response:Response):any{
     const cuenta:Cuenta= this.bancoService.getCuentaPorNumeroCuenta(numeroCuenta);
     if(cuenta){
       return response.status(200).json(cuenta);
