@@ -27,7 +27,7 @@ export class PaisesService {
     const response = await axios.get(this.urlGlobal);
     const paisPoblacionMax:Pais[] = response.data.map(p=> new Pais(p.name,p.region,p.population,p.capital,p.flag));
     //Aqui va mirando la poblacion y las va comparando para encontrar la maxima
-    paisPoblacionMax.reduce((poblacionMayor, poblacionActual)=>{
+    return paisPoblacionMax.reduce((poblacionMayor, poblacionActual)=>{
       if (poblacionActual.poblacion>poblacionMayor.poblacion){
         return poblacionActual;
       }else{

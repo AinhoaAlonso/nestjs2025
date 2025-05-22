@@ -14,15 +14,16 @@ import { PaisesService} from 'src/Service/paises.service';
 export class PaisesController {
   constructor(private readonly paisesService: PaisesService) {}
 
-  findByContinente(){
-    
+  @Get('paises-continente/:continente')
+  findByContinente(@Param ("continente") continente:string){
+    return this.paisesService.findByContinente(continente);
   }
-
+  @Get('continentes')
   findAllContinente(){
-
+    return this.paisesService.findAllContinente();
   }
-
+  @Get('pais-max-poblacion')
   findPoblacionMax(){
-    
+    return this.paisesService.findPoblacionMax();
   }
 }
