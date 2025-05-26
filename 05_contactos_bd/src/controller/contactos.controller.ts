@@ -5,17 +5,24 @@ import {
   Get,
   Param,
   Post,
+  Res,
 } from '@nestjs/common';
 import { ContactosService } from 'src/Service/contactos.service';
 import { Contacto } from 'src/model/Contacto';
+import { Response } from 'express';
 
 @Controller('contactos')
 export class ContactosController {
   constructor(private readonly contactosService: ContactosService) {}
 
   @Post("alta")
-  create(@Body() contacto: Contacto) {
-    return this.contactosService.save(contacto);
+  async create(@Body() contacto: Contacto, @Res() response:Response) {
+    const resultado:boolean = await this.contactosService.save(contacto);
+    if(resultado){
+      response.status(200).send();
+    }else{
+      response.status(409).send();
+    }
   }
 
   @Get("todos")
