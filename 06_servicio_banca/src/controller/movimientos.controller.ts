@@ -19,7 +19,7 @@ export class MovimientosController {
     return this.movimientosService.findByCuenta(idCuenta);
   }
 
-  @Post('nuevoMovimiento')
+  @Post('alta')
   newMovimiento(@Body() movimiento: Movimiento){
     this.movimientosService.newMovimiento(movimiento);
   }
@@ -29,6 +29,10 @@ export class MovimientosController {
     console.log("Fecha1", fecha1);
     console.log("Fecha2", fecha2);
     return this.movimientosService.finByEntreFechas(fecha1,fecha2)
+  }
+  @Get('cuentas/:saldoMin')
+  findMovimientosCuentasSaldoMin(@Param('saldoMin') saldo: number){
+    return this.movimientosService.findMovimientosCuentasSaldoMin(saldo);
   }
 }
  
