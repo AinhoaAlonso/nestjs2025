@@ -4,50 +4,38 @@ import { Cliente } from 'src/model/Cliente';
 import { Cuenta } from 'src/model/Cuenta';
 import { Movimiento } from 'src/model/Movimiento';
 import { In, MoreThan, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CuentasService {
   constructor(
     @InjectRepository(Cuenta) private cuentasRepository:Repository<Cuenta>,
-    @InjectRepository(Movimiento) private movimientosRepository:Repository<Movimiento>,
-    @InjectRepository(Cliente) private clientesRepository:Repository<Cliente>
+    @InjectRepository(Cliente) private clientesRepository:Repository<Cliente>,
+    private dataSource:DataSource
   ){}
 
-
-  async findCuentasMovimientosPorFecha(fecha1: Date): Promise<Cuenta[]> {
-    const movimientos = await this.movimientosRepository.find({ 
-      where: {
-        fecha:fecha1
-      },
-      relations: ["cuenta"]
-    })
-     return movimientos.map(mov => mov.cuenta)
+  async findCuentasMovimientosPorFecha(fecha:Date):Promise<Cuenta[]> {
+    return this.cuentasRepository.createQueryBuilder("cuenta")
+    .innerJoin("cuenta.movimientos", "mov")
+    .where ("mov.fecha=:fecha1", {fecha1:fecha})
+    .distinct(true)
+    .getMany();
   }
 
-  async findCuentasExtraccionesSaldo(cantidad: number): Promise<Cuenta[]> {
-    const movimientos = await this.movimientosRepository.find({ 
-      where: {
-        cantidad: MoreThan(cantidad),
-        operacion: "extracción"
-      },
-      relations: ["cuenta"]
-    })
-     return movimientos.map(mov => mov.cuenta)
+  async findCuentasExtraccionesSaldo(cantidad:number):Promise<Cuenta[]> {
+    return this.cuentasRepository.createQueryBuilder("cuenta")
+    .innerJoin("cuenta.movimientos", "mov")
+    .where("mov.cantidad>:cantidad", {cantidad:cantidad})
+    .andWhere("mov.operacion=:extracción")
+    .getMany();
   }
 
   //Cuentas asociadas al titular cuyo dni sea el parametro, solo busca uno porque Dni es unico
   async findCuentasPorTitular(dni:number):Promise<Cuenta[]>{
-    const cliente:Cliente = await this.clientesRepository.findOne({
-      where:{dni:dni},
-      relations:["cuentas"]
-    });
-    console.log("Cliente", cliente);
-    if(cliente){
-      return cliente.cuentas;
-    }else{
-      //Si no existe ningun cliente con ese dni devuelve un array vacio
-      return [];
-    }
+    return this.cuentasRepository.createQueryBuilder("cuenta")
+    .innerJoin("cuenta.clientes", "cli")
+    .where("cli.dni", {dni:dni})
+    .getMany();
   }
   //alta de nueva cuenta
   //recibe un objeto cuenta y un array con los dnis de los titulares que va a tener esa cuenta
@@ -59,6 +47,17 @@ export class CuentasService {
     const clientes: Cliente[] = await this.clientesRepository.findBy({dni:In(titulares)});
     cuenta.clientes = clientes;
     return this.cuentasRepository.save(cuenta);    
-}
+  }
+
+  saldoMedio():Promise<any>{
+    return this.dataSource.query("select avg(saldo) as saldo from cuentas")
+  }
+
+  nuevaAlta(cuenta:Cuenta):void{
+    this.dataSource.query(
+      "insert into cuentas values(?,?,?)",[cuenta.numeroCuenta,cuenta.saldo,cuenta.tipocuenta]
+    )
+    this.dataSource
+  }
 
 }
