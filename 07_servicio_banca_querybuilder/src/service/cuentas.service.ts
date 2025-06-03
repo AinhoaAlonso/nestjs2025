@@ -53,11 +53,4 @@ export class CuentasService {
     return this.dataSource.query("select avg(saldo) as saldo from cuentas")
   }
 
-  nuevaAlta(cuenta:Cuenta):void{
-    this.dataSource.query(
-      "insert into cuentas values(?,?,?)",[cuenta.numeroCuenta,cuenta.saldo,cuenta.tipocuenta]
-    )
-    this.dataSource
-  }
-
 }

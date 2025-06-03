@@ -3,6 +3,9 @@ import { Curso } from "./Curso";
 
 @Entity("alumnos")
 export class Alumno{
+    AlumnoResultadoDto(usuario: string, password: string, nombre: string, email: string, edad: number): any {
+      throw new Error('Method not implemented.');
+    }
     @PrimaryColumn()
     usuario:string;
     @Column()

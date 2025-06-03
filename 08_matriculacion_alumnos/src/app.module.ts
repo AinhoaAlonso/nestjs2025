@@ -5,6 +5,7 @@ import { AlumnosService } from './service/alumnos.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Curso } from './model/Curso';
 import { Alumno } from './model/Alumno';
+import { MatriculasService } from './service/matriculas.service';
 
 
 @Module({
@@ -22,6 +23,6 @@ import { Alumno } from './model/Alumno';
     TypeOrmModule.forFeature([Curso, Alumno])
   ],
   controllers: [CursosController],
-  providers: [CursosService, AlumnosService],
+  providers: [CursosService, AlumnosService, MatriculasService],
 })
 export class AppModule {}
