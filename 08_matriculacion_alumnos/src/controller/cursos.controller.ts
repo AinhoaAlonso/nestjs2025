@@ -11,6 +11,9 @@ import { CursosService } from 'src/service/cursos.service';
 import { MatriculasService } from 'src/service/matriculas.service';
 import { Response } from 'express';
 import { MatriculaNuevaDto } from 'src/dto/MatriculaNuevaDto';
+import { CursoAltaDto } from 'src/dto/CursoAltaDto';
+import { Alumno } from 'src/model/Alumno';
+import { AlumnoNuevoDto } from 'src/dto/AlumnoNuevoDto';
 
 @Controller('cursos')
 export class CursosController {
@@ -50,5 +53,15 @@ export class CursosController {
     } else{
       response.status(400).send()
     }
+  }
+
+  @Post('nuevoCurso')
+  altaCurso(@Body() datos:CursoAltaDto){
+    return this.cursosService.altaCurso(datos);
+  }
+
+  @Post('nuevoAlumno')
+  nuevoAlumno(@Body() alumno:AlumnoNuevoDto){
+    return this.alumnosService.nuevoAlumno(alumno);
   }
 }
