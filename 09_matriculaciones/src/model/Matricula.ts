@@ -4,18 +4,23 @@ import { Curso } from "./Curso";
 
 @Entity("matriculas")
 export class Matricula{
+    @PrimaryColumn()
+    usuario:string;
+    @PrimaryColumn()
+    idCurso:number;
+
     @ManyToOne(()=> Alumno, alumno => alumno.matriculas)
     @JoinColumn({name:"usuario", referencedColumnName:"usuario"})
-    usuario:Alumno;
+    alumno:Alumno;
 
     @ManyToOne(()=> Curso, curso => curso.matriculas)
     @JoinColumn({name:"idCurso", referencedColumnName:"idCurso"})
-    idCurso:Curso;
+    curso:Curso;
     
     @Column()
     nota:number;
 
-    constructor(usuario:Alumno, idCurso:Curso, nota:number)
+    constructor(alumno:Alumno, curso:Curso, nota:number)
     {
         this.usuario = usuario;
         this.idCurso = idCurso;

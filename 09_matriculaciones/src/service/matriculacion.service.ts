@@ -20,6 +20,6 @@ export class MatriculacionService {
       .innerJoin("matricula.alumno", "alu")
       .where("cur.idCurso=:idCurso",{idCurso:idCurso})
       .getMany();
-    return matriculas.map(m=>new MatriculaDatosDto(m.usuario.usuario, m.usuario.email,m.idCurso.nombre, m.nota))
+    return matriculas.map(m=>new MatriculaDatosDto(m.alumno.usuario, m.alumno.email,m.curso.nombre, m.nota))
   }
 }
