@@ -1,3 +1,4 @@
+import { CursoDatosDto } from './../dtos/CursoDatosDto';
 import { Repository } from 'typeorm';
 import { Matricula } from './../model/Matricula';
 import { Injectable } from '@nestjs/common';
@@ -16,10 +17,15 @@ export class MatriculacionService {
 
   async mostrarAlumnosMatriculados(idCurso:number):Promise<MatriculaDatosDto[]>{
     const matriculas: Matricula[]= await this.matriculasRepository.createQueryBuilder('matricula')
-      .innerJoin("matricula.curso", "cur")
-      .innerJoin("matricula.alumno", "alu")
+      .innerJoinAndSelect("matricula.curso", "cur")
+      .innerJoinAndSelect("matricula.alumno", "alu")
       .where("cur.idCurso=:idCurso",{idCurso:idCurso})
       .getMany();
     return matriculas.map(m=>new MatriculaDatosDto(m.alumno.usuario, m.alumno.email,m.curso.nombre, m.nota))
+  }
+  //Para que solo me devuelva los datos del dto, lo tengo que transformar y hacer el mapeado con los dos campos que me interesan
+  async mostrarDatosCursos():Promise<CursoDatosDto[]>{
+    const cursos:Curso[]= await this.cursosRepository.find();
+    return cursos.map(c=>new CursoDatosDto(c.idCurso, c.nombre));
   }
 }

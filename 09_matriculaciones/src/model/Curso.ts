@@ -1,7 +1,5 @@
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Matricula } from "./Matricula";
-
-
 @Entity("cursos")
 export class Curso{
     @PrimaryGeneratedColumn()
@@ -14,10 +12,8 @@ export class Curso{
     fechaInicio:string;
     @Column()
     precio:number;
-    @OneToMany(()=> Matricula, matricula => matricula.idCurso)
+    @OneToMany(()=> Matricula, matricula => matricula.curso)
     matriculas: Matricula[];
-
-    
 
     constructor(idCurso?:number, nombre?:string, duracion?:number, fechaInicio?:string, precio?:number){
         this.idCurso = idCurso;

@@ -1,5 +1,4 @@
 import { IsEmail, IsInt, IsString, Max, Min } from "class-validator";
-
 export class MatriculaDatosDto{
     @IsString()
     usuario:string;
@@ -11,7 +10,6 @@ export class MatriculaDatosDto{
     @Min(0)
     @Max(10)
     nota:number;
-
     constructor(usuario:string, email:string, nombre:string, nota:number){
         this.usuario = usuario;
         this.email = email;
