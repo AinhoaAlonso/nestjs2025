@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
+import { LoginDto } from 'src/dtos/LoginDto';
 
 
 @Injectable()
 export class UsersService {
-  private readonly users = [ 
-    { id: 1, username: 'admin', password: 'admin', role: 'admin' }, 
-    { id: 2, username: 'usuario', password: 'usuario', role: 'user' }, 
-    { id: 2, username: 'usuario1', password: 'usuario1', role: 'user' }
-  ]; 
+  constructor(){}
 
-  async findByUserName(username:string): Promise<any>{
+  async findByUserName(username:string): Promise<LoginDto>{
     return this.users.find(user => user.username == username);
   }
 }
