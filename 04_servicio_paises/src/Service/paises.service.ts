@@ -5,7 +5,8 @@ import { Pais } from 'src/Model/Pais';
 
 @Injectable()
 export class PaisesService {
-  urlGlobal:string="https://restcountries.com/v2/all"; 
+  urlGlobal:string="https://restcountries.com/v2/all?fields=name,region,flag,population,capital";
+ 
 
   async findByContinente(continente:string):Promise<Pais[]>{
    const response=await axios.get(this.urlGlobal);

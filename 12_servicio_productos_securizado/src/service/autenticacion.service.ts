@@ -12,7 +12,7 @@ export class AutenticacionService {
     const valid:boolean=password.trim()==user.password;
     console.log(valid);
     //si el usuario es correcto, devolvemos un Json cons sus propiedades, menos la contraseña
-    if (user && valid) {
+    if (user) {
     const { password, ...result } = user;
     return result;
     }
