@@ -1,0 +1,29 @@
+import { IsInt } from 'class-validator';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Venta } from './Venta';
+
+
+@Entity("clientes")
+export class Cliente{
+    @PrimaryGeneratedColumn()
+    idCliente:number;
+    @Column()
+    usuario:string;
+    @Column()
+    password:string;
+    @Column()
+    email:string;
+    @Column()
+    telefono:number
+
+    @OneToMany(()=>Venta,venta=>venta.cliente)
+    ventas:Venta[];
+
+    constructor(idCliente?:number, usuario?:string, password?:string, email?:string, telefono?:number){
+        this.idCliente = idCliente;
+        this.usuario = usuario;
+        this.password = password;
+        this.email = email;
+        this.telefono = telefono;
+    }
+}
